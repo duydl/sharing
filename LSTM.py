@@ -9,7 +9,7 @@ from argparse import Namespace
 
 
 flags = Namespace(
-    train_file='123.txt',
+    train_file='Trump.txt',
     seq_size=32,
     batch_size=16,
     embedding_size=64,
@@ -90,7 +90,7 @@ def main():
     iteration = 0
 
 
-    for e in range(50):
+    for e in range(200):
         batches = get_batches(in_text, out_text, flags.batch_size, flags.seq_size)
         state_h, state_c = net.zero_state(flags.batch_size)
         
@@ -135,12 +135,12 @@ def main():
                       'Iteration: {}'.format(iteration),
                       'Loss: {}'.format(loss_value))
 
-            if iteration % 500 == 0:
+            if iteration % 1000 == 0:
                 predict(device, net, flags.initial_words, n_vocab,
                         vocab_to_int, int_to_vocab, top_k=5)
                 torch.save(net.state_dict(),
                            'checkpoint_pt/model-{}.pth'.format(iteration))
-                break
+                
 def predict(device, net, words, n_vocab, vocab_to_int, int_to_vocab, top_k=5):
     net.eval()
 
